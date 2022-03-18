@@ -63,7 +63,7 @@ def UpdateStudent():
     gen = u_gender.get()
     hob1 = u_hobby1.get()
     hob2 = u_hobby2.get()
-
+    hob3 = ""
     if hob1 == "Cricket" and hob2 == "Football":
         hob3 = hob1 + " | " + hob2
     elif hob1 == "Cricket" and hob2 == "":
@@ -73,7 +73,10 @@ def UpdateStudent():
     elif hob1 == "" and hob2 == "":
         hob3 = ""
 
-    user.UpdateUser(name, email, cno, course, city, hob3, gen, id)
+    if name == "" or email == "" or cno == "" or city == "" or gen == "" or hob3 == "":
+        messagebox.showinfo("Required", "All Field Required ")
+    else:
+        user.UpdateUser(name, email, cno, course, city, hob3, gen, id)
     ClearField()
     DispList.destroy()
     createTreeView()
@@ -103,11 +106,12 @@ def SetValueFromList(event):
     sel_Course.set(str(select['Course']))
     u_city.set(select['City'])
     u_hobby1.set(str(select['Hobby']))
+    u_hobby2.set(str(select['Hobby']))
     u_gender.set(str(select['Gender']))
 
 
 root = Tk()
-root.geometry('1200x1200')
+root.geometry('800x700+300+50')
 
 global u_id, u_nm, u_em, u_cno, u_course, u_city, u_hobby1, u_hobby2, u_gender
 
@@ -121,7 +125,6 @@ u_hobby1 = StringVar()
 u_hobby2 = StringVar()
 u_gender = StringVar()
 
-Label(root, text="Student Form").grid(row=0, column=3, padx=10, pady=10)
 Label(root, text="Student ID").grid(row=4, column=3, padx=10, pady=10)
 Label(root, text="Student Name").grid(row=5, column=3, padx=10, pady=10)
 Label(root, text="Email").grid(row=6, column=3, padx=10, pady=10)
@@ -143,7 +146,7 @@ sel_Course.grid(row=8, column=5, padx=10, pady=10)
 sel_Course.current(0)
 
 # Select City Value Here
-city = ["Junagadh", "Rajkot", "Bhavanagar"]
+city = ["Junagadh", "Rajkot", "Bhavnagar"]
 u_city.set("Select Your City")
 OptionMenu(root, u_city, *city).grid(row=9, column=5, padx=10, pady=10)
 
@@ -165,10 +168,10 @@ rd2 = Radiobutton(root, value='FeMale', text='FeMale', variable=u_gender)
 rd2.grid(row=11, column=6, padx=10, pady=10)
 
 # Function Button
-Button(root, text="Add", command=AddStudent, height=2, width=13).grid(row=14, column=5, padx=10, pady=10)
-Button(root, text="Update", command=UpdateStudent, height=2, width=13).grid(row=14, column=6, padx=10, pady=10)
-Button(root, text="Delete", command=DeleteStudent, height=2, width=13).grid(row=15, column=5, padx=10, pady=10)
-Button(root, text="Clear", command=ClearField, height=2, width=13).grid(row=15, column=6, padx=10, pady=10)
+Button(root, text="Add", command=AddStudent, height=2, width=13).grid(row=14, column=3, padx=20, pady=10)
+Button(root, text="Update", command=UpdateStudent, height=2, width=13).grid(row=14, column=5, padx=10, pady=10)
+Button(root, text="Delete", command=DeleteStudent, height=2, width=13).grid(row=14, column=6, padx=10, pady=10)
+Button(root, text="Clear", command=ClearField, height=2, width=13).grid(row=14, column=7, padx=20, pady=10)
 
 
 def createTreeView():
@@ -180,14 +183,16 @@ def createTreeView():
     DispList.column(2, width=120)
     DispList.column(3, width=75)
     DispList.column(4, width=75)
+    DispList.column(5, width=80)
+    DispList.column(6, width=100)
+    DispList.column(7, width=80)
 
     for col in cols:
         DispList.heading(col, text=col)
         DispList.grid(row=1, column=1)
-        DispList.grid(row=17, column=7)
-
+        # DispList.grid(row=16, column=7)
+        DispList.place(x=30, y=450)
     DispList.bind('<ButtonRelease-1>', SetValueFromList)
-
 
 
 createTreeView()
