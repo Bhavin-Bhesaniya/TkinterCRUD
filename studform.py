@@ -1,6 +1,6 @@
+import re
 from tkinter import *
 from tkinter import messagebox, ttk
-
 import UserDao as user
 
 
@@ -33,6 +33,25 @@ def AddStudent():
     hob1 = u_hobby1.get()
     hob2 = u_hobby2.get()
 
+    # Validation Check
+    name_pat = re.compile(r"[A-Za-z]+")
+    if re.fullmatch(name_pat, name):
+        v_name = name
+    else:
+        messagebox.showerror("Validation", "InValid Name")
+
+    email_pat = re.compile(r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$")
+    if re.fullmatch(email_pat, email):
+        v_email = email
+    else:
+        messagebox.showerror("Validation", "InValid Email")
+
+    contact_pat = re.compile(r"[0-9]{10}")
+    if re.fullmatch(contact_pat, cno):
+        v_cno = cno
+    else:
+        messagebox.showerror("Validation", "InValid Contact No")
+
     if hob1 == "Cricket" and hob2 == "Football":
         hob3 = hob1 + " | " + hob2
     elif hob1 == "Cricket" and hob2 == "":
@@ -42,12 +61,12 @@ def AddStudent():
     elif hob1 == "" and hob2 == "":
         hob3 = ""
 
-    if name == "" or email == "" or cno == "" or city == "" or gen == "" or hob3 == "":
+    if name == "" or email == "" or cno == "" or course == "Select Course" or city == "Select Your City" or gen == "" or hob3 == "":
         messagebox.showinfo("Required", "All Field Required ")
     else:
-        user.SaveUser(name, email, cno, course, city, hob3, gen)
+        user.SaveUser(v_name, v_email, v_cno, course, city, hob3, gen)
+        ClearField()
 
-    ClearField()
     DispList.destroy()
     createTreeView()
     ShowStudent()
@@ -64,6 +83,26 @@ def UpdateStudent():
     hob1 = u_hobby1.get()
     hob2 = u_hobby2.get()
     hob3 = ""
+
+    # Validation Check
+    name_pat = re.compile(r"[A-Za-z]+")
+    if re.fullmatch(name_pat, name):
+        v_name = name
+    else:
+        messagebox.showerror("Validation", "InValid Name")
+
+    email_pat = re.compile(r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$")
+    if re.fullmatch(email_pat, email):
+        v_email = email
+    else:
+        messagebox.showerror("Validation", "InValid Email")
+
+    contact_pat = re.compile(r"[0-9]{10}")
+    if re.fullmatch(contact_pat, cno):
+        v_cno = cno
+    else:
+        messagebox.showerror("Validation", "InValid Contact No")
+
     if hob1 == "Cricket" and hob2 == "Football":
         hob3 = hob1 + " | " + hob2
     elif hob1 == "Cricket" and hob2 == "":
@@ -73,11 +112,12 @@ def UpdateStudent():
     elif hob1 == "" and hob2 == "":
         hob3 = ""
 
-    if name == "" or email == "" or cno == "" or city == "" or gen == "" or hob3 == "":
+    if name == "" or email == "" or cno == "" or course == "Select Course" or city == "Select Your City" or gen == "" or hob3 == "":
         messagebox.showinfo("Required", "All Field Required ")
     else:
-        user.UpdateUser(name, email, cno, course, city, hob3, gen, id)
-    ClearField()
+        user.UpdateUser(v_name, v_email, v_cno, course, city, hob3, gen, id)
+        ClearField()
+
     DispList.destroy()
     createTreeView()
     ShowStudent()
@@ -106,7 +146,7 @@ def SetValueFromList(event):
     sel_Course.set(str(select['Course']))
     u_city.set(select['City'])
     u_hobby1.set(str(select['Hobby']))
-    u_hobby2.set(str(select['Hobby']))
+    # u_hobby2.set(str(select['Hobby']))
     u_gender.set(str(select['Gender']))
 
 
@@ -151,7 +191,7 @@ u_city.set("Select Your City")
 OptionMenu(root, u_city, *city).grid(row=9, column=5, padx=10, pady=10)
 
 # CheckButton
-chk1 = Checkbutton(root, variable=u_hobby1, text='Cricket', onvalue='Cricket', offvalue="")
+chk1 = Checkbutton(root, text='Cricket', variable=u_hobby1, onvalue='Cricket', offvalue="")
 chk1.grid(row=10, column=5, pady=10)
 chk1.deselect()
 
