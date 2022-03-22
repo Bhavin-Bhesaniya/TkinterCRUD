@@ -229,8 +229,6 @@ def createTreeView():
 
     for col in cols:
         DispList.heading(col, text=col)
-        DispList.grid(row=1, column=1)
-        # DispList.grid(row=16, column=7)
         DispList.place(x=30, y=450)
     DispList.bind('<ButtonRelease-1>', SetValueFromList)
 
